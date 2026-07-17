@@ -36,12 +36,20 @@
           "imageWidth": 76
         }
       ],
+      "expo-image",
       "@clerk/expo",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fe39e07c-3973-4c49-a3f8-f7661c2614d8"
+      }
     }
   }
 }
