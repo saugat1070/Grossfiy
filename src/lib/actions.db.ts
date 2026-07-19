@@ -1,0 +1,64 @@
+// query: fetch data
+// mutation: update data
+import { desc, eq } from "drizzle-orm";
+import { db } from "./server/db/client";
+import { groceryItems } from "./server/db/schema";
+
+export const listGroceryItems = async () => {
+  const rows = await db
+    .select()
+    .from(groceryItems)
+    .orderBy(desc(groceryItems.priority));
+};
+
+export const insertGroceryItem = async (data: {
+  name: string;
+  category: string;
+  quantity: string;
+  priority: string;
+}) => {
+  const rows = await db
+    .insert(groceryItems)
+    .values({
+      id: crypto.randomUUID(),
+      name: data?.name,
+      category: data?.category,
+      quantity: data?.quantity,
+      purchased: false,
+      priority: data?.priority,
+    })
+    .returning();
+  if (!rows.length) return null;
+  return rows[0];
+};
+
+export const setGroceryItemPurchased = async (id: string) => {
+  const rows = await db
+    .update(groceryItems)
+    .set({ purchased: true })
+    .where(eq(groceryItems.id, id))
+    .returning();
+  if (!rows.length) return null;
+  return rows[0];
+};
+
+export const updateGroceryItemQuantity = async (
+  id: string,
+  quantity: string,
+) => {
+  const rows = await db
+    .update(groceryItems)
+    .set({ quantity: Math.max(1, parseInt(quantity)).toString() })
+    .where(eq(groceryItems.id, id))
+    .returning();
+  if (!rows.length) return null;
+  return rows[0];
+};
+
+export const deleteGroceryItem = async (id: string) => {
+  await db.delete(groceryItems).where(eq(groceryItems.id, id)).returning();
+};
+
+export const clearPurchasedItems = async () => {
+  await db.delete(groceryItems).where(eq(groceryItems.purchased, true));
+};

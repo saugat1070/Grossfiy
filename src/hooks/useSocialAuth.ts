@@ -31,3 +31,5 @@ const useSocialAuth = () => {
 };
 
 export default useSocialAuth;
+
+// module: expo-crypto needs to run SSO flow on the native side
