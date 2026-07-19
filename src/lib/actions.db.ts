@@ -32,7 +32,10 @@ export const insertGroceryItem = async (data: {
   return rows[0];
 };
 
-export const setGroceryItemPurchased = async (id: string) => {
+export const setGroceryItemPurchased = async (
+  id: string,
+  purchased: boolean,
+) => {
   const rows = await db
     .update(groceryItems)
     .set({ purchased: true })
